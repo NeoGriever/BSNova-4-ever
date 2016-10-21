@@ -1,0 +1,61 @@
+<div style="font-family:Arial;">
+	<div style="text-align:center;font-size:38px;font-weight:bold;">
+		Hilfe zu Patterns
+	</div>
+	<div style="text-align:justify;padding-left:4px;padding-right:4px;">
+		Die Patterns in BSNova dienen dazu, Serien und Filme entsprechend zu benennen und in Ordner zu sortieren.
+		Hierbei k&ouml;nnen mehrere "Platzhalter" genutzt werden, um daraus g&uuml;ltige Pfadangaben zu erzeugen.<br>
+		<br>
+		Das Einstellungs-Fenster von BSNova4ever besitzt eine Live-Vorschau f&uuml;r die Formulierung von Patterns. Somit
+		kann man immer sofort sehen, wie sich ein Pattern auf eine Episode oder einen Film auswirkt.<br>
+		<br>
+		Es gibt folgende Pattern-Platzhalter:<br>
+		<table width="100%" border="0" cellspacing="0" cellpadding="0" style="border:1px solid black;border-collapse:collapse;">
+			<tr>
+				<td style="border:1px solid black;padding:2px;padding-left:5px;padding-right:5px;text-align:justify;background:#80F0F0;font-weight:bold;" width="30%">Platzhalter</td>
+				<td style="border:1px solid black;padding:2px;padding-left:5px;padding-right:5px;text-align:justify;background:#80F0F0;font-weight:bold;" width="70%">Beschreibung</td>
+			</tr>
+			<tr>
+				<td style="font-family:Courier New;border:1px solid black;padding:2px;padding-left:5px;padding-right:5px;text-align:justify;background:#EFEFEF;">%serie%</td>
+				<td style="border:1px solid black;padding:2px;padding-left:5px;padding-right:5px;text-align:justify;background:#EFEFEF;">Der Name der entsprechenden Serie</td>
+			</tr>
+			<tr>
+				<td style="font-family:Courier New;border:1px solid black;padding:2px;padding-left:5px;padding-right:5px;text-align:justify;background:#F6F6F6;">%seasonNN%</td>
+				<td style="border:1px solid black;padding:2px;padding-left:5px;padding-right:5px;text-align:justify;background:#F6F6F6;">Die Staffel-Nummer. Diese wird auf 2 Stellen aufgewertet. Das hei&szlig;t, Staffel 9 wird zu 09.</td>
+			</tr>
+			<tr>
+				<td style="font-family:Courier New;border:1px solid black;padding:2px;padding-left:5px;padding-right:5px;text-align:justify;background:#EFEFEF;">%seasonN%</td>
+				<td style="border:1px solid black;padding:2px;padding-left:5px;padding-right:5px;text-align:justify;background:#EFEFEF;">Die Staffel-Nummer ohne Aufwertung auf 2 Stellen.</td>
+			</tr>
+			<tr>
+				<td style="font-family:Courier New;border:1px solid black;padding:2px;padding-left:5px;padding-right:5px;text-align:justify;background:#F6F6F6;">%episodeNN%</td>
+				<td style="border:1px solid black;padding:2px;padding-left:5px;padding-right:5px;text-align:justify;background:#F6F6F6;">Die Episoden-Nummer. Diese wird auf 2 Stellen aufgewertet. Das hei&szlig;t, Episode 4 wird zu Episode 04.</td>
+			</tr>
+			<tr>
+				<td style="font-family:Courier New;border:1px solid black;padding:2px;padding-left:5px;padding-right:5px;text-align:justify;background:#EFEFEF;">%episodeN%</td>
+				<td style="border:1px solid black;padding:2px;padding-left:5px;padding-right:5px;text-align:justify;background:#EFEFEF;">Die Episoden-Nummer ohne Aufwertung auf 2 Stellen.</td>
+			</tr>
+			<tr>
+				<td style="font-family:Courier New;border:1px solid black;padding:2px;padding-left:5px;padding-right:5px;text-align:justify;background:#F6F6F6;">%name%</td>
+				<td style="border:1px solid black;padding:2px;padding-left:5px;padding-right:5px;text-align:justify;background:#F6F6F6;">Der Name der Episode. Hierbei wird vorzugsweise der deutsche Name gew&auml;hlt. Ist kein deutscher Name vorhanden, wird der englische Name gew&auml;hlt.</td>
+			</tr>
+			<tr>
+				<td style="font-family:Courier New;border:1px solid black;padding:2px;padding-left:5px;padding-right:5px;text-align:justify;background:#EFEFEF;">%nameE%</td>
+				<td style="border:1px solid black;padding:2px;padding-left:5px;padding-right:5px;text-align:justify;background:#EFEFEF;">Der englische Name der Episode. Sollte kein englischer Name vorhanden sein, wird der Platz nicht mit dem deutschen Namen ersetzt.</td>
+			</tr>
+			<tr>
+				<td style="font-family:Courier New;border:1px solid black;padding:2px;padding-left:5px;padding-right:5px;text-align:justify;background:#F6F6F6;">%nameG%</td>
+				<td style="border:1px solid black;padding:2px;padding-left:5px;padding-right:5px;text-align:justify;background:#F6F6F6;">Der deutsche Name der Episode. Sollte kein deutscher Name vorhanden sein, wird der Platz nicht mit dem englischen Namen ersetzt.</td>
+			</tr>
+		</table>
+		Es ist m&ouml;glich, innerhalb des Patterns Backslashes zu nutzen, welche zur Erzeugung von Ordner dienen. Ein Beispiel:<br>
+		<br>
+		<font style="font-family:Courier New;">%serie%\%seasonNN%\%episodeNN% - %name%.mp4</font><br>
+		<br>
+		Dadurch wird im Ordner "SERIENNAME" der Ordner "STAFFELNUMMER" erzeugt, worin dann die Episoden eingeordnet werden.<br>
+		<br>
+		Beispiel-Ergebnis:<br><font style="font-family:Courier New;">(Downloadpfad)\Beispielserie\02\06 - Beispielepisode.mp4</font><br>
+		<br>
+		Es ist wichtig, dass am Ende IMMER die Dateiendung angeh&auml;ngt wird! Es wird empfohlen, diese mit .mp4 zu benennen.
+	</div>
+</div>
