@@ -221,6 +221,7 @@ Public Partial Class MainForm
 			End If
 		End Sub
 		Private Sub MainFormLoad(sender As Object, e As EventArgs)
+			MessageBox.Show("1")
 			AddHandler GlobalDebugDiag.DebugDiag.MessageFired, AddressOf HandleLogEntries
 			Dim letters() As Char = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray()
 			For Each i As Char In letters

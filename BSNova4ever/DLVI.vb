@@ -67,41 +67,37 @@ Public Partial Class DLVI
 					Try
 						Dim dl As String = currentHoster.Link(0)
 						Dim hs As String = HosterScripts.GetHosterScript(currentHoster.Hoster.Name)
-						Try
-							Dim hosterParsingClass As Object = QuickCompiler.Compile(hs)
-							Dim directLink As String = CStr(hosterParsingClass.ParseHoster(dl))
-							If directLink = "" Then
-								SetState(currentHoster.Hoster.Name & " parsen fehlgeschlagen")
-								currentHoster.Success = 2
-								_Active = False
-							Else
-								SetState(currentHoster.Hoster.Name & " parsen erfolgreich")
-								SetState("Download läuft ...")
-								Dim fi As New System.IO.FileInfo(TargetPath)
-								If Not fi.Directory.Exists Then
-									Dim par As DirectoryInfo = fi.Directory.Parent
-									If Not par.Exists Then
-										Dim tpar As DirectoryInfo = par.Parent
-										If Not tpar.Exists Then
-											Dim vpar As DirectoryInfo = tpar.Parent
-											If Not vpar.Exists Then
-												vpar.Create()
-											End If
-											tpar.Create()
-										End If
-										par.Create()
-									End If
-									fi.Directory.Create()
-								End If
-								wc.DownloadFileAsync(New Uri(directLink),TargetPath)
-								Successed = True
-							End If
-						Catch ex As Exception
-							GlobalDebugDiag.DebugDiag.Log(ex.ToString(),"INFO")
+						Dim ht As Integer = HosterScripts.GetHosterScriptType(currentHoster.Hoster.Name)
+						Dim hosterParsingClass As Object = QuickCompiler.Compile(hs,ht)
+						Dim directLink As String = CStr(hosterParsingClass.ParseHoster(dl))
+						If directLink = "" Then
 							SetState(currentHoster.Hoster.Name & " parsen fehlgeschlagen")
 							currentHoster.Success = 2
-						End Try
-					Catch
+							_Active = False
+						Else
+							SetState(currentHoster.Hoster.Name & " parsen erfolgreich")
+							SetState("Download läuft ...")
+							Dim fi As New System.IO.FileInfo(TargetPath)
+							If Not fi.Directory.Exists Then
+								Dim par As DirectoryInfo = fi.Directory.Parent
+								If Not par.Exists Then
+									Dim tpar As DirectoryInfo = par.Parent
+									If Not tpar.Exists Then
+										Dim vpar As DirectoryInfo = tpar.Parent
+										If Not vpar.Exists Then
+											vpar.Create()
+										End If
+										tpar.Create()
+									End If
+									par.Create()
+								End If
+								fi.Directory.Create()
+							End If
+							wc.DownloadFileAsync(New Uri(directLink),TargetPath)
+							Successed = True
+						End If
+					Catch ex As Exception
+						GlobalDebugDiag.DebugDiag.Log(ex.ToString(),"INFO")
 						SetState("Hoster-Fehler")
 					End Try
 				Else
@@ -116,6 +112,9 @@ Public Partial Class DLVI
 		End While
 	End Sub
 	Public Sub DLPDone(ByVal sender As Object,ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
+		If e.Error IsNot Nothing Then
+			GlobalDebugDiag.DebugDiag.Log(e.Error.ToString(),"INFO")
+		End If
 		SetState("Download abgeschlossen")
 		_finished = True
 	End Sub
