@@ -140,10 +140,11 @@ Public Partial Class DLVI
 	Public Sub New(ByVal epi As API.Episode,ByVal hos As List(Of API.Hoster))
 		Episode = epi
 		Hosters = hos
-		TargetPath = GlobalConfig.GlobalConfig.GetValue("downloader.path").Trim()
-		If TargetPath = "" Then
-			TargetPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonVideos)
+		TargetPath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.CommonVideos)
+		If TargetPath.Substring(TargetPath.Length - 1,1) <> "\" Then
+			TargetPath &= "\"
 		End If
+		TargetPath = GlobalConfig.GlobalConfig.DBSelect("downloader.path",TargetPath,True).Trim()
 		If TargetPath.Substring(TargetPath.Length - 1,1) <> "\" Then
 			TargetPath &= "\"
 		End If

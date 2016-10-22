@@ -44,14 +44,8 @@
     <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GlobalConfig">
-      <HintPath>..\..\..\..\Downloads\Projektdaten\BSNova2\BSNovaAPI\bin\Debug\GlobalConfig.dll</HintPath>
-    </Reference>
-    <Reference Include="GlobalLog">
-      <HintPath>..\..\..\..\Downloads\Projektdaten\BSNova2\BSNovaAPI\bin\Debug\GlobalLog.dll</HintPath>
-    </Reference>
     <Reference Include="Newtonsoft.Json">
-      <HintPath>..\..\..\..\Downloads\Projektdaten\BSNova2\BSNovaAPI\bin\Debug\Newtonsoft.Json.dll</HintPath>
+      <HintPath>Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Collections" />
@@ -163,6 +157,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\GlobalConfig\GlobalConfig.vbproj">
+      <Project>{8EAFD53A-1121-413B-8B31-9B0835215A17}</Project>
+      <Name>GlobalConfig</Name>
+    </ProjectReference>
     <ProjectReference Include="..\GlobalDebugDiag\GlobalDebugDiag.vbproj">
       <Project>{C7BF7EAE-C402-403E-A4CE-4DDF7C63B974}</Project>
       <Name>GlobalDebugDiag</Name>

@@ -42,16 +42,8 @@ Public Class NameGenerator
 			Return(builded_string)
 		End Function
 		Public Overloads Shared Function BuildName(ByVal nvc As System.Collections.Specialized.NameValueCollection) As String
-			Dim moviePattern As String = GlobalConfig.GlobalConfig.GetValue("pattern.movie")
-			If moviePattern = "" Then
-				moviePattern = "%serie%\%name%.mp4"
-				GlobalConfig.GlobalConfig.SetValue("pattern.movie",moviePattern)
-			End If
-			Dim episodePattern As String = GlobalConfig.GlobalConfig.GetValue("pattern.episode")
-			If episodePattern = "" Then
-				episodePattern = "%serie%\S%seasonNN%E%episodeNN% - %name%.mp4"
-				GlobalConfig.GlobalConfig.SetValue("pattern.episode",episodePattern)
-			End If
+			Dim moviePattern As String = GlobalConfig.GlobalConfig.DBSelect("pattern.movie","%serie%\%name%.mp4",True)
+			Dim episodePattern As String = GlobalConfig.GlobalConfig.DBSelect("pattern.episode","%serie%\S%seasonNN%E%episodeNN% - %name%.mp4",True)
 			Dim usingPattern = episodePattern
 			If nvc.Get("%seasonN%") = "0" Then
 				usingPattern = moviePattern

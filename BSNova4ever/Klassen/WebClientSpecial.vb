@@ -11,11 +11,7 @@ Public Class WebClientSpecial
 	Public StartAt As Integer = 0
 	Public ReadOnly Property DefaultTimeout As Integer
 		Get
-			Dim result As String = GlobalConfig.GlobalConfig.GetValue("api.timeout")
-			If result = "" Then
-				result = "15000"
-				GlobalConfig.GlobalConfig.SetValue("api.timeout",result)
-			End If
+			Dim result As String = GlobalConfig.GlobalConfig.DBSelect("api.timeout","15000",True)
 			Return(CInt(result))
 		End Get
 	End Property
@@ -89,16 +85,12 @@ Public Class WebClientSpecial
 		Catch
 		End Try
 		
-		If Not skipCache And GlobalConfig.GlobalConfig.GetValue("api.caching") = "1" AND System.IO.File.Exists(cachePath & cacheFile) Then
+		If Not skipCache And GlobalConfig.GlobalConfig.DBSelect("api.caching","0",False) = "1" AND System.IO.File.Exists(cachePath & cacheFile) Then
 			Dim fs As New FileStream(cachePath & cacheFile,FileMode.Open)
 			Dim br As New BinaryReader(fs)
 			Dim stamp As DateTime = DateTime.FromFileTime(br.ReadInt64())
 			Dim age As Long = CLng((DateTime.Now - stamp).TotalSeconds())
-			Dim maxAge As String = GlobalConfig.GlobalConfig.GetValue("api.cache.maxage")
-			If maxAge = "" Then
-				maxAge = "30"
-				GlobalConfig.GlobalConfig.SetValue("api.cache.maxage",maxAge)
-			End If
+			Dim maxAge As String = GlobalConfig.GlobalConfig.DBSelect("api.cache.maxage",30,True)
 			If age > 86400 * CInt(maxAge) Then
 				Return(DownloadStringCached(s,True))
 				br.Close()
@@ -118,7 +110,7 @@ Public Class WebClientSpecial
 				API.ValidateThread()
 				Dim src As String = MyBase.DownloadString(s)
 				If src.IndexOf("""error"":""unauthorized""") < 0 Then
-					If GlobalConfig.GlobalConfig.GetValue("api.caching") = "1" Then
+					If GlobalConfig.GlobalConfig.DBSelect("api.caching","0",False) = "1" Then
 						Dim fs As New FileStream(cachePath & cacheFile,FileMode.Create)
 						Dim bw As New BinaryWriter(fs)
 						

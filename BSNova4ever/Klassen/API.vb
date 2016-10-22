@@ -12,7 +12,7 @@ Public Class API
 	Private Shared AlreadyWriting As Boolean = False
 	Public Shared Property LastCall As Long
 		Get
-			Dim rsl As String = GlobalConfig.GlobalConfig.GetValue("api.lastcall")
+			Dim rsl As String = GlobalConfig.GlobalConfig.DBSelect("api.lastcall",0,False)
 			If rsl = "" Then
 				Return(0)
 			Else
@@ -20,11 +20,11 @@ Public Class API
 			End If
 		End Get
 		Set
-			GlobalConfig.GlobalConfig.SetValue("api.lastcall",Value.ToString())
+			GlobalConfig.GlobalConfig.DBInsert("api.lastcall",Value.ToString())
 		End Set
 	End Property
 	Public Shared Sub ValidateThread()
-		Dim usespeedlimit As String = GlobalConfig.GlobalConfig.GetValue("api.speedlimit")
+		Dim usespeedlimit As String = GlobalConfig.GlobalConfig.DBSelect("api.speedlimit","0",False)
 		If usespeedlimit = "" Then
 			usespeedlimit = "0"
 		End If
@@ -545,18 +545,18 @@ Public Class API
 	End Sub
 	Public Shared Property UserHash As String
 		Get
-			Return(GlobalConfig.GlobalConfig.GetValue("userHash"))
+			Return(GlobalConfig.GlobalConfig.DBSelect("userHash","",False))
 		End Get
 		Set
-			GlobalConfig.GlobalConfig.SetValue("userHash",Value)
+			GlobalConfig.GlobalConfig.DBInsert("userHash",Value)
 		End Set
 	End Property
 	Public Shared Property UserName As String
 		Get
-			Return(GlobalConfig.GlobalConfig.GetValue("userName"))
+			Return(GlobalConfig.GlobalConfig.DBSelect("userName","",False))
 		End Get
 		Set
-			GlobalConfig.GlobalConfig.SetValue("userName",Value)
+			GlobalConfig.GlobalConfig.DBInsert("userName",Value)
 		End Set
 	End Property
 	Private Shared Function GetUHash() As String
