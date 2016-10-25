@@ -57,4 +57,9 @@ Public Partial Class DebugViewer
 		Dim dwd As New DebugViewerDetails(t,y,d)
 		dwd.ShowDialog()
 	End Sub
+	
+	Sub LogdateiÜbermittelnToolStripMenuItemClick(sender As Object, e As EventArgs)
+		Dim ulf As New UploadLogfile()
+		ulf.ShowDialog()
+	End Sub
 End Class

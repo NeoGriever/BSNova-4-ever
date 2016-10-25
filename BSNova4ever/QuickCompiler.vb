@@ -25,7 +25,7 @@ Public Class QuickCompiler
 		oCParams.ReferencedAssemblies.Add("System.dll")
 		oCParams.ReferencedAssemblies.Add("System.Windows.Forms.dll")
 		oCParams.ReferencedAssemblies.Add("System.Linq.dll")
-		oCParams.ReferencedAssemblies.Add("GlobalDebugDiag.dll")
+		oCParams.ReferencedAssemblies.Add("GlobalDebugDiag.exe")
 		Dim oCResults As CompilerResults = Nothing
 		Dim oAssy As Assembly = Nothing
 		oCParams.GenerateInMemory = True

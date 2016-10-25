@@ -90,7 +90,7 @@ Public Class WebClientSpecial
 			Dim br As New BinaryReader(fs)
 			Dim stamp As DateTime = DateTime.FromFileTime(br.ReadInt64())
 			Dim age As Long = CLng((DateTime.Now - stamp).TotalSeconds())
-			Dim maxAge As String = GlobalConfig.GlobalConfig.DBSelect("api.cache.maxage",30,True)
+			Dim maxAge As String = GlobalConfig.GlobalConfig.DBSelect("api.cache.maxage","30",True)
 			If age > 86400 * CInt(maxAge) Then
 				Return(DownloadStringCached(s,True))
 				br.Close()

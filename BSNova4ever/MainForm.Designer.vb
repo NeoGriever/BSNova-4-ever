@@ -55,14 +55,27 @@ Partial Class MainForm
 		Me.toolStripMenuItem1 = New System.Windows.Forms.ToolStripSeparator()
 		Me.neustartenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.toolStrip1 = New System.Windows.Forms.ToolStrip()
+		Me.toolStripLabel1 = New System.Windows.Forms.ToolStripLabel()
+		Me.toolStripDropDownButton1 = New System.Windows.Forms.ToolStripDropDownButton()
+		Me.toolStripMenuItem3 = New System.Windows.Forms.ToolStripMenuItem()
+		Me.toolStripMenuItem4 = New System.Windows.Forms.ToolStripMenuItem()
+		Me.toolStripMenuItem5 = New System.Windows.Forms.ToolStripMenuItem()
+		Me.toolStripMenuItem6 = New System.Windows.Forms.ToolStripMenuItem()
+		Me.uNEINGESCHRÄNKTWarnungToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.timer1 = New System.Windows.Forms.Timer(Me.components)
 		Me.menuStrip1 = New System.Windows.Forms.MenuStrip()
 		Me.scriptEditorÖffnenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.einstellungenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
 		Me.neueVersionHerunterladenToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+		Me.dlGesamtstatus = New System.Windows.Forms.ToolStripLabel()
+		Me.toolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
+		Me.dlSpeedIndicator = New System.Windows.Forms.ToolStripLabel()
 		Me.timer2 = New System.Windows.Forms.Timer(Me.components)
 		Me.statusStrip1 = New System.Windows.Forms.StatusStrip()
 		Me.toolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
+		Me.timer3 = New System.Windows.Forms.Timer(Me.components)
+		Me.timer4 = New System.Windows.Forms.Timer(Me.components)
+		Me.toolStripLabel2 = New System.Windows.Forms.ToolStripLabel()
 		Me.contextMenuStrip1.SuspendLayout
 		CType(Me.splitContainer1,System.ComponentModel.ISupportInitialize).BeginInit
 		Me.splitContainer1.Panel1.SuspendLayout
@@ -71,6 +84,7 @@ Partial Class MainForm
 		Me.panel1.SuspendLayout
 		Me.toolStrip2.SuspendLayout
 		Me.contextMenuStrip2.SuspendLayout
+		Me.toolStrip1.SuspendLayout
 		Me.menuStrip1.SuspendLayout
 		Me.statusStrip1.SuspendLayout
 		Me.SuspendLayout
@@ -247,12 +261,64 @@ Partial Class MainForm
 		'toolStrip1
 		'
 		Me.toolStrip1.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+		Me.toolStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.toolStripLabel1, Me.toolStripDropDownButton1})
 		Me.toolStrip1.Location = New System.Drawing.Point(0, 0)
 		Me.toolStrip1.Name = "toolStrip1"
 		Me.toolStrip1.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional
 		Me.toolStrip1.Size = New System.Drawing.Size(356, 25)
 		Me.toolStrip1.TabIndex = 1
 		Me.toolStrip1.Text = "toolStrip1"
+		'
+		'toolStripLabel1
+		'
+		Me.toolStripLabel1.Name = "toolStripLabel1"
+		Me.toolStripLabel1.Size = New System.Drawing.Size(139, 22)
+		Me.toolStripLabel1.Text = "Gleichzeitige Downloads:"
+		'
+		'toolStripDropDownButton1
+		'
+		Me.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text
+		Me.toolStripDropDownButton1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.toolStripMenuItem3, Me.toolStripMenuItem4, Me.toolStripMenuItem5, Me.toolStripMenuItem6, Me.uNEINGESCHRÄNKTWarnungToolStripMenuItem})
+		Me.toolStripDropDownButton1.Image = CType(resources.GetObject("toolStripDropDownButton1.Image"),System.Drawing.Image)
+		Me.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta
+		Me.toolStripDropDownButton1.Name = "toolStripDropDownButton1"
+		Me.toolStripDropDownButton1.Size = New System.Drawing.Size(26, 22)
+		Me.toolStripDropDownButton1.Text = "1"
+		'
+		'toolStripMenuItem3
+		'
+		Me.toolStripMenuItem3.Name = "toolStripMenuItem3"
+		Me.toolStripMenuItem3.Size = New System.Drawing.Size(211, 22)
+		Me.toolStripMenuItem3.Text = "1"
+		AddHandler Me.toolStripMenuItem3.Click, AddressOf Me.ToolStripMenuItem3Click
+		'
+		'toolStripMenuItem4
+		'
+		Me.toolStripMenuItem4.Name = "toolStripMenuItem4"
+		Me.toolStripMenuItem4.Size = New System.Drawing.Size(211, 22)
+		Me.toolStripMenuItem4.Text = "3"
+		AddHandler Me.toolStripMenuItem4.Click, AddressOf Me.ToolStripMenuItem4Click
+		'
+		'toolStripMenuItem5
+		'
+		Me.toolStripMenuItem5.Name = "toolStripMenuItem5"
+		Me.toolStripMenuItem5.Size = New System.Drawing.Size(211, 22)
+		Me.toolStripMenuItem5.Text = "6"
+		AddHandler Me.toolStripMenuItem5.Click, AddressOf Me.ToolStripMenuItem5Click
+		'
+		'toolStripMenuItem6
+		'
+		Me.toolStripMenuItem6.Name = "toolStripMenuItem6"
+		Me.toolStripMenuItem6.Size = New System.Drawing.Size(211, 22)
+		Me.toolStripMenuItem6.Text = "10"
+		AddHandler Me.toolStripMenuItem6.Click, AddressOf Me.ToolStripMenuItem6Click
+		'
+		'uNEINGESCHRÄNKTWarnungToolStripMenuItem
+		'
+		Me.uNEINGESCHRÄNKTWarnungToolStripMenuItem.Name = "uNEINGESCHRÄNKTWarnungToolStripMenuItem"
+		Me.uNEINGESCHRÄNKTWarnungToolStripMenuItem.Size = New System.Drawing.Size(211, 22)
+		Me.uNEINGESCHRÄNKTWarnungToolStripMenuItem.Text = "UNBEGRENZT (Warnung!)"
+		AddHandler Me.uNEINGESCHRÄNKTWarnungToolStripMenuItem.Click, AddressOf Me.UNEINGESCHRÄNKTWarnungToolStripMenuItemClick
 		'
 		'timer1
 		'
@@ -261,7 +327,7 @@ Partial Class MainForm
 		'
 		'menuStrip1
 		'
-		Me.menuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.scriptEditorÖffnenToolStripMenuItem, Me.einstellungenToolStripMenuItem, Me.neueVersionHerunterladenToolStripMenuItem})
+		Me.menuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.scriptEditorÖffnenToolStripMenuItem, Me.einstellungenToolStripMenuItem, Me.neueVersionHerunterladenToolStripMenuItem, Me.dlGesamtstatus, Me.toolStripSeparator1, Me.dlSpeedIndicator, Me.toolStripLabel2})
 		Me.menuStrip1.Location = New System.Drawing.Point(0, 0)
 		Me.menuStrip1.Name = "menuStrip1"
 		Me.menuStrip1.Size = New System.Drawing.Size(880, 24)
@@ -288,10 +354,35 @@ Partial Class MainForm
 		Me.neueVersionHerunterladenToolStripMenuItem.Font = New System.Drawing.Font("Segoe UI", 9!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0,Byte))
 		Me.neueVersionHerunterladenToolStripMenuItem.Image = CType(resources.GetObject("neueVersionHerunterladenToolStripMenuItem.Image"),System.Drawing.Image)
 		Me.neueVersionHerunterladenToolStripMenuItem.Name = "neueVersionHerunterladenToolStripMenuItem"
-		Me.neueVersionHerunterladenToolStripMenuItem.Size = New System.Drawing.Size(205, 20)
+		Me.neueVersionHerunterladenToolStripMenuItem.Size = New System.Drawing.Size(205, 23)
 		Me.neueVersionHerunterladenToolStripMenuItem.Text = "Neue Version herunterladen ..."
 		Me.neueVersionHerunterladenToolStripMenuItem.Visible = false
 		AddHandler Me.neueVersionHerunterladenToolStripMenuItem.Click, AddressOf Me.NeueVersionHerunterladenToolStripMenuItemClick
+		'
+		'dlGesamtstatus
+		'
+		Me.dlGesamtstatus.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+		Me.dlGesamtstatus.Name = "dlGesamtstatus"
+		Me.dlGesamtstatus.Size = New System.Drawing.Size(104, 20)
+		Me.dlGesamtstatus.Text = "Downloads inaktiv"
+		Me.dlGesamtstatus.Visible = false
+		AddHandler Me.dlGesamtstatus.MouseLeave, AddressOf Me.DlGesamtstatusMouseLeave
+		AddHandler Me.dlGesamtstatus.MouseHover, AddressOf Me.DlGesamtstatusMouseHover
+		AddHandler Me.dlGesamtstatus.MouseMove, AddressOf Me.DlGesamtstatusMouseMove
+		'
+		'toolStripSeparator1
+		'
+		Me.toolStripSeparator1.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+		Me.toolStripSeparator1.Name = "toolStripSeparator1"
+		Me.toolStripSeparator1.Size = New System.Drawing.Size(6, 23)
+		Me.toolStripSeparator1.Visible = false
+		'
+		'dlSpeedIndicator
+		'
+		Me.dlSpeedIndicator.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+		Me.dlSpeedIndicator.Name = "dlSpeedIndicator"
+		Me.dlSpeedIndicator.Size = New System.Drawing.Size(33, 17)
+		Me.dlSpeedIndicator.Text = "0 B/s"
 		'
 		'timer2
 		'
@@ -316,6 +407,24 @@ Partial Class MainForm
 		Me.toolStripStatusLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleLeft
 		AddHandler Me.toolStripStatusLabel1.Click, AddressOf Me.ToolStripStatusLabel1Click
 		'
+		'timer3
+		'
+		Me.timer3.Enabled = true
+		Me.timer3.Interval = 500
+		AddHandler Me.timer3.Tick, AddressOf Me.Timer3Tick
+		'
+		'timer4
+		'
+		Me.timer4.Enabled = true
+		AddHandler Me.timer4.Tick, AddressOf Me.Timer4Tick
+		'
+		'toolStripLabel2
+		'
+		Me.toolStripLabel2.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+		Me.toolStripLabel2.Name = "toolStripLabel2"
+		Me.toolStripLabel2.Size = New System.Drawing.Size(109, 17)
+		Me.toolStripLabel2.Text = "Ø Geschwindigkeit:"
+		'
 		'MainForm
 		'
 		Me.AutoScaleDimensions = New System.Drawing.SizeF(6!, 13!)
@@ -339,6 +448,8 @@ Partial Class MainForm
 		Me.toolStrip2.ResumeLayout(false)
 		Me.toolStrip2.PerformLayout
 		Me.contextMenuStrip2.ResumeLayout(false)
+		Me.toolStrip1.ResumeLayout(false)
+		Me.toolStrip1.PerformLayout
 		Me.menuStrip1.ResumeLayout(false)
 		Me.menuStrip1.PerformLayout
 		Me.statusStrip1.ResumeLayout(false)
@@ -346,6 +457,19 @@ Partial Class MainForm
 		Me.ResumeLayout(false)
 		Me.PerformLayout
 	End Sub
+	Private toolStripLabel2 As System.Windows.Forms.ToolStripLabel
+	Private timer4 As System.Windows.Forms.Timer
+	Private dlSpeedIndicator As System.Windows.Forms.ToolStripLabel
+	Private toolStripSeparator1 As System.Windows.Forms.ToolStripSeparator
+	Private dlGesamtstatus As System.Windows.Forms.ToolStripLabel
+	Private timer3 As System.Windows.Forms.Timer
+	Private uNEINGESCHRÄNKTWarnungToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
+	Private toolStripMenuItem6 As System.Windows.Forms.ToolStripMenuItem
+	Private toolStripMenuItem5 As System.Windows.Forms.ToolStripMenuItem
+	Private toolStripMenuItem4 As System.Windows.Forms.ToolStripMenuItem
+	Private toolStripMenuItem3 As System.Windows.Forms.ToolStripMenuItem
+	Private toolStripDropDownButton1 As System.Windows.Forms.ToolStripDropDownButton
+	Private toolStripLabel1 As System.Windows.Forms.ToolStripLabel
 	Private neueVersionHerunterladenToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 	Private einstellungenToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem
 	Private neustartenToolStripMenuItem As System.Windows.Forms.ToolStripMenuItem

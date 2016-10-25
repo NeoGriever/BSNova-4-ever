@@ -117,7 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <metadata name="menuStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>17, 17</value>
-  </metadata>
+  <data name="label1.Text" xml:space="preserve">
+    <value>Hiermit wird die Logdatei von BSNova4ever auf den Server übertragen und zur Analyse freigegeben. Dies dient dazu, um Fehler aufzuspüren und zu korrigieren.
+
+Es ist nicht nötig, die Logdatei im Forum zu posten oder auf Filehoster zu Laden. Es erleichtert Beiderseits die Arbeit an BSNova4ever.</value>
+  </data>
 </root>

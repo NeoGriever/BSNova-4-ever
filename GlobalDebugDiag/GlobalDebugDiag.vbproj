@@ -4,8 +4,8 @@
     <ProjectGuid>{C7BF7EAE-C402-403E-A4CE-4DDF7C63B974}</ProjectGuid>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <OutputType>Library</OutputType>
-    <MyType>Windows</MyType>
+    <OutputType>WinExe</OutputType>
+    <MyType>WindowsForms</MyType>
     <RootNamespace>GlobalDebugDiag</RootNamespace>
     <AssemblyName>GlobalDebugDiag</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -18,6 +18,7 @@
     <TreatWarningsAsErrors>False</TreatWarningsAsErrors>
     <IntermediateOutputPath>obj\$(Configuration)\</IntermediateOutputPath>
     <WarningLevel>4</WarningLevel>
+    <StartupObject>GlobalDebugDiag.UploadLogfile</StartupObject>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Platform)' == 'AnyCPU' ">
     <PlatformTarget>x86</PlatformTarget>
@@ -41,6 +42,7 @@
     <Optimize>True</Optimize>
     <DefineConstants>TRACE=1</DefineConstants>
     <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+    <StartAction>Project</StartAction>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -59,14 +61,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Import Include="Microsoft.VisualBasic" />
-    <Import Include="System" />
-    <Import Include="System.Collections" />
-    <Import Include="System.Collections.Generic" />
-    <Import Include="System.Data" />
-    <Import Include="System.Diagnostics" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="DebugViewer.Designer.vb">
       <DependentUpon>DebugViewer.vb</DependentUpon>
     </Compile>
@@ -75,12 +69,12 @@
       <DependentUpon>DebugViewerDetails.vb</DependentUpon>
     </Compile>
     <Compile Include="DebugViewerDetails.vb" />
-    <Compile Include="ListViewDoubleBuffered.Designer.vb">
-      <DependentUpon>ListViewDoubleBuffered.vb</DependentUpon>
-    </Compile>
-    <Compile Include="ListViewDoubleBuffered.vb" />
     <Compile Include="NewClass.vb" />
     <Compile Include="Properties\AssemblyInfo.vb" />
+    <Compile Include="UploadLogfile.Designer.vb">
+      <DependentUpon>UploadLogfile.vb</DependentUpon>
+    </Compile>
+    <Compile Include="UploadLogfile.vb" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="DebugViewer.resx">
@@ -89,6 +83,17 @@
     <EmbeddedResource Include="DebugViewerDetails.resx">
       <DependentUpon>DebugViewerDetails.vb</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="UploadLogfile.resx">
+      <DependentUpon>UploadLogfile.vb</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Import Include="Microsoft.VisualBasic" />
+    <Import Include="System" />
+    <Import Include="System.Collections" />
+    <Import Include="System.Collections.Generic" />
+    <Import Include="System.Data" />
+    <Import Include="System.Diagnostics" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
 </Project>

@@ -3,12 +3,14 @@ Imports System.Collections.Specialized
 Imports System.Text
 Imports System.Xml
 Imports System.Text.RegularExpressions
+Imports System.Windows.Freezable
+Imports System.Windows.Shell
 
 Public Partial Class MainForm
 	Public Sub New()
 		Me.InitializeComponent()
 	End Sub
-	Private selfTimestamp As DateTime = DateTime.Parse("2016-10-14 02:00:00")
+	Private selfTimestamp As DateTime = DateTime.Parse("2016-10-22 22:45:00")
 	#Region " Variablen "
 		Private SortingList As New HybridDictionary()
 		Private treeNodeList As New HybridDictionary()
@@ -27,7 +29,12 @@ Public Partial Class MainForm
 		End Sub
 		Private Sub ListView1ItemActivate(sender As Object, e As EventArgs)
 			Try
-				CType(listView1.FocusedItem,DLVI).BeginDownload()
+				Dim itm As DLVI = CType(listView1.FocusedItem,DLVI)
+				If Not itm.Active And Not itm.Done Then
+					itm.BeginDownload()
+				ElseIf itm.Done And Not itm.Fehler Then
+					itm.LaunchFile()
+				End If
 			Catch
 			End Try
 		End Sub
@@ -221,7 +228,6 @@ Public Partial Class MainForm
 			End If
 		End Sub
 		Private Sub MainFormLoad(sender As Object, e As EventArgs)
-			MessageBox.Show("1")
 			AddHandler GlobalDebugDiag.DebugDiag.MessageFired, AddressOf HandleLogEntries
 			Dim letters() As Char = "#ABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray()
 			For Each i As Char In letters
@@ -286,6 +292,8 @@ Public Partial Class MainForm
 					GlobalDebugDiag.DebugDiag.Log("Füge Episode """ & epi.Name & """ der Staffel """ & epi.Season.Number & """ der Serie """ & epi.Season.Serie.Name & """ der Downloadliste hinzu ...","Information")
 					Dim dlvi_item As New DLVI(epi,Hosters)
 					dlvi_item.SubItems.Add("Wartend ...")
+					AddHandler dlvi_item.Finished, AddressOf DLDone
+					AddHandler dlvi_item.AddReceivedBytes, AddressOf ARB
 					listView1.Items.Add(dlvi_item)
 				Next
 				treeView1.SelectedNode = mr
@@ -301,7 +309,41 @@ Public Partial Class MainForm
 				GlobalDebugDiag.DebugDiag.Log("Füge Episode """ & epi.Name & """ der Staffel """ & epi.Season.Number & """ der Serie """ & epi.Season.Serie.Name & """ der Downloadliste hinzu ...","Information")
 				Dim dlvi_item As New DLVI(epi,Hosters)
 				dlvi_item.SubItems.Add("Wartend ...")
+				AddHandler dlvi_item.Finished, AddressOf DLDone
+				AddHandler dlvi_item.AddReceivedBytes, AddressOf ARB
 				listView1.Items.Add(dlvi_item)
+			End If
+			CheckAutostart()
+		End Sub
+		Private Delegate Sub DLDoneD(ByRef obj As DLVI,ByVal e As Exception)
+		Private Sub DLDone(ByRef obj As DLVI,ByVal e As Exception)
+			If listView1.InvokeRequired Then
+				Me.Invoke(New DLDoneD(AddressOf DLDone),New Object() {obj,e})
+			Else
+				CheckAutostart()
+			End If
+		End Sub
+		Private Sub CheckAutostart()
+			Dim async_count As Long = 3
+			If toolStripDropDownButton1.Text <> "UNBEGRENZT" Then
+				async_count = CLng(toolStripDropDownButton1.Text)
+			Else
+				async_count = 9999
+			End If
+			For Each i As DLVI In listView1.Items
+				If i.Active Then
+					async_count -= 1
+				End If
+			Next
+			If async_count > 0 Then
+				For Each i As DLVI In listView1.Items
+					If Not i.Active And Not i.Done And Not i.Fehler And async_count > 0 Then
+						async_count -= 1
+						i.BeginDownload()
+					ElseIf async_count < 1 Then
+						Exit For
+					End If
+				Next
 			End If
 		End Sub
 		Private Sub ContextMenuStrip1Opening(sender As Object, e As System.ComponentModel.CancelEventArgs)
@@ -483,19 +525,23 @@ Public Partial Class MainForm
 			seriesLoadingThread.Start()
 		End Sub
 		Private Sub DoLoadingSeries()
-			Dim sortingKeys(SortingList.Keys.Count) As Char
-			SortingList.Keys.CopyTo(sortingKeys,0)
-			Dim seriesList As New List(Of API.Serie)
-			seriesList.AddRange(API.Series.GetSeries(True))
-			Dim target_element As Char = CChar("#")
-			For Each i As API.Serie In seriesList
-				Dim n As String = i.Name.Trim()
-				Dim l As Char = CChar(n.Substring(0,1).ToUpper())
-				If Array.IndexOf(sortingKeys,l) > -1 Then
-					target_element = l
-				End If
-				CType(SortingList.Item(target_element),List(Of API.Serie)).Add(i)
-			Next
+			Try
+				Dim sortingKeys(SortingList.Keys.Count) As Char
+				SortingList.Keys.CopyTo(sortingKeys,0)
+				Dim seriesList As New List(Of API.Serie)
+				seriesList.AddRange(API.Series.GetSeries(True))
+				Dim target_element As Char = CChar("#")
+				For Each i As API.Serie In seriesList
+					Dim n As String = i.Name.Trim()
+					Dim l As Char = CChar(n.Substring(0,1).ToUpper())
+					If Array.IndexOf(sortingKeys,l) > -1 Then
+						target_element = l
+					End If
+					CType(SortingList.Item(target_element),List(Of API.Serie)).Add(i)
+				Next
+			Catch ex As Exception
+				MessageBox.Show(ex.ToString())
+			End Try
 			Me.Invoke(New FinishedLoadingSeriesD(AddressOf FinishedLoadingSeries))
 		End Sub
 		Private Sub DoLoadSeasons(Optional ByVal SkipExpand As Boolean = False)
@@ -551,7 +597,9 @@ Public Partial Class MainForm
 		Dim cw As New Config()
 		cw.Show()
 	End Sub
+	
 	Private dl_cache As String = ""
+	
 	Private ReadOnly Property UpdateDownloadLink As String
 		Get
 			Try
@@ -593,5 +641,96 @@ Public Partial Class MainForm
 	
 	Sub NeueVersionHerunterladenToolStripMenuItemClick(sender As Object, e As EventArgs)
 		System.Diagnostics.Process.Start(Me.UpdateDownloadLink)
+	End Sub
+	
+	Sub ToolStripMenuItem3Click(sender As Object, e As EventArgs)
+		toolStripDropDownButton1.Text = "1"
+	End Sub
+	
+	Sub ToolStripMenuItem4Click(sender As Object, e As EventArgs)
+		toolStripDropDownButton1.Text = "3"
+	End Sub
+	
+	Sub ToolStripMenuItem5Click(sender As Object, e As EventArgs)
+		toolStripDropDownButton1.Text = "6"
+	End Sub
+	
+	Sub ToolStripMenuItem6Click(sender As Object, e As EventArgs)
+		toolStripDropDownButton1.Text = "10"
+	End Sub
+	
+	Sub UNEINGESCHRÄNKTWarnungToolStripMenuItemClick(sender As Object, e As EventArgs)
+		toolStripDropDownButton1.Text = "UNBEGRENZT"
+	End Sub
+	
+	Private tii As TaskbarItemInfo = New TaskbarItemInfo()
+	
+	Sub Timer3Tick(sender As Object, e As EventArgs)
+		Dim max As Long = 0
+		Dim cur As Long = 0
+		For Each i As DLVI In listView1.Items
+			Try
+				If i.Active Then
+					max += i.max
+					cur += i.cur
+				End If
+			Catch
+			End Try
+		Next
+		If max > 0 Then
+			Try
+				Dim perc As Double = (cur / max) * 100
+				Dim percTxt As String = FormatNumber(perc,2, TriState.False, TriState.False, TriState.False) & "%"
+				dlGesamtstatus.Text = percTxt
+			Catch ex As Exception
+				dlGesamtstatus.Text = "Downloads inaktiv"
+			End Try
+		End If
+	End Sub
+	
+	Sub DlGesamtstatusMouseHover(sender As Object, e As EventArgs)
+		timer3.Interval = 100
+	End Sub
+	
+	Sub DlGesamtstatusMouseLeave(sender As Object, e As EventArgs)
+		timer3.Interval = 500
+	End Sub
+	
+	Sub DlGesamtstatusMouseMove(sender As Object, e As MouseEventArgs)
+		timer3.Interval = 100
+	End Sub
+	Private bytesIn As Long = 0
+	
+	Private l As New List(Of Double)
+	
+	Sub Timer4Tick(sender As Object, e As EventArgs)
+		l.Add(bytesIn)
+		bytesIn = 0
+		
+		If l.Count > 25 Then
+			l.RemoveAt(0)
+		End If
+		
+		Dim buff As Double = 0
+		For Each i As Double In l.ToArray()
+			buff += i
+		Next
+		buff = (buff / 25) * 10
+		
+		Dim outp As String = ""
+		Dim typ As String = "B"
+		If buff > 1024 Then
+			buff = buff / 1024
+			typ = "KB"
+			If buff > 1024 Then
+				buff = buff / 1024
+				typ = "MB"
+			End If
+		End If
+		outp = FormatNumber(buff,2, TriState.True,TriState.False,TriState.True) & " " & typ & "/s"
+		dlSpeedIndicator.Text = outp
+	End Sub
+	Sub ARB(ByVal b As Long)
+		bytesIn += b
 	End Sub
 End Class

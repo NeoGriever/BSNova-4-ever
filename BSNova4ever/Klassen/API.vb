@@ -12,7 +12,7 @@ Public Class API
 	Private Shared AlreadyWriting As Boolean = False
 	Public Shared Property LastCall As Long
 		Get
-			Dim rsl As String = GlobalConfig.GlobalConfig.DBSelect("api.lastcall",0,False)
+			Dim rsl As String = GlobalConfig.GlobalConfig.DBSelect("api.lastcall","0",False)
 			If rsl = "" Then
 				Return(0)
 			Else

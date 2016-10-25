@@ -8,11 +8,17 @@ Public Partial Class DLVI
 	Private Hosters As List(Of API.Hoster)
 	Private _Active As Boolean = False
 	Private _finished As Boolean = False
+	Private _error As Boolean = False
 	Private TargetPath As String = ""
 	Private GeneratedName As String = ""
 	Private wc As New WebClient()
 	Private _vis As Boolean = True
 	
+	Public ReadOnly Property Fehler As Boolean
+		Get
+			Return(_error)
+		End Get
+	End Property
 	Public ReadOnly Property Active As Boolean
 		Get
 			Return(_Active)
@@ -52,6 +58,8 @@ Public Partial Class DLVI
 			cur_val = s
 		End If
 	End Sub
+	
+	Public Event Finished(ByRef obj As DLVI,ByVal e As Exception)
 	
 	Private Sub WorkOnHoster()
 		Dim shl As List(Of HosterState) = GetSortedHosterList(Hosters)
@@ -105,23 +113,55 @@ Public Partial Class DLVI
 					currentHoster.Success = 2
 				End If
 			Else
-				SetState("Hoster-Problem!")
+				SetState("Hoster-Problem! (Keine Hoster!)")
 				NoHoster = True
 				_Active = False
+				_error = True
+				_finished = False
+				RaiseEvent Finished(Me,New Exception("Kein Hoster verfügbar!"))
 			End If
 		End While
 	End Sub
+	Public Sub LaunchFile()
+		System.Diagnostics.Process.Start(TargetPath)
+	End Sub
 	Public Sub DLPDone(ByVal sender As Object,ByVal e As System.ComponentModel.AsyncCompletedEventArgs)
 		If e.Error IsNot Nothing Then
-			GlobalDebugDiag.DebugDiag.Log(e.Error.ToString(),"INFO")
+			If e.Error.Message.IndexOf("The request was canceled") > -1 Then
+				SetState("Download abgebrochen")
+				_Active = False
+				_finished = False
+				_error = False
+				cur = 0
+				max = 0
+			Else
+				GlobalDebugDiag.DebugDiag.Log(e.Error.ToString(),"INFO")
+				SetState("Download fehlgeschlagen")
+				_Active = False
+				_finished = False
+				_error = True
+				cur = 0
+				max = 0
+			End If
+		Else
+			SetState("Download abgeschlossen")
+			_Active = False
+			_finished = True
+			_error = False
 		End If
-		SetState("Download abgeschlossen")
+		RaiseEvent Finished(Me,e.Error)
 		_finished = True
 	End Sub
 	Private cur_val As String = ""
+	Public cur As Long = 0
+	Public max As Long = 0
+	Private _last_received As Long = 0
+	Public Event AddReceivedBytes(ByVal b As Long)
 	Public Sub DLPChanged(ByVal sender As Object,ByVal e As System.Net.DownloadProgressChangedEventArgs)
-		Dim cur As Long = e.BytesReceived
-		Dim max As Long = e.TotalBytesToReceive
+		cur = e.BytesReceived
+		max = e.TotalBytesToReceive
+		RaiseEvent AddReceivedBytes(e.BytesReceived - _last_received)
+		_last_received = e.BytesReceived
 		If cur_val <> "Download läuft ... (" & e.ProgressPercentage & "%)" Then
 			SetState("Download läuft ... (" & e.ProgressPercentage & "%)")
 		End If
