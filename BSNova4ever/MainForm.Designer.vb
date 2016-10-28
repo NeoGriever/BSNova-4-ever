@@ -70,12 +70,12 @@ Partial Class MainForm
 		Me.dlGesamtstatus = New System.Windows.Forms.ToolStripLabel()
 		Me.toolStripSeparator1 = New System.Windows.Forms.ToolStripSeparator()
 		Me.dlSpeedIndicator = New System.Windows.Forms.ToolStripLabel()
+		Me.toolStripLabel2 = New System.Windows.Forms.ToolStripLabel()
 		Me.timer2 = New System.Windows.Forms.Timer(Me.components)
 		Me.statusStrip1 = New System.Windows.Forms.StatusStrip()
 		Me.toolStripStatusLabel1 = New System.Windows.Forms.ToolStripStatusLabel()
 		Me.timer3 = New System.Windows.Forms.Timer(Me.components)
 		Me.timer4 = New System.Windows.Forms.Timer(Me.components)
-		Me.toolStripLabel2 = New System.Windows.Forms.ToolStripLabel()
 		Me.contextMenuStrip1.SuspendLayout
 		CType(Me.splitContainer1,System.ComponentModel.ISupportInitialize).BeginInit
 		Me.splitContainer1.Panel1.SuspendLayout
@@ -95,7 +95,7 @@ Partial Class MainForm
 		Me.treeView1.Dock = System.Windows.Forms.DockStyle.Fill
 		Me.treeView1.Location = New System.Drawing.Point(0, 0)
 		Me.treeView1.Name = "treeView1"
-		Me.treeView1.Size = New System.Drawing.Size(520, 254)
+		Me.treeView1.Size = New System.Drawing.Size(520, 251)
 		Me.treeView1.TabIndex = 0
 		AddHandler Me.treeView1.AfterSelect, AddressOf Me.TreeView1AfterSelect
 		AddHandler Me.treeView1.DoubleClick, AddressOf Me.TreeView1DoubleClick
@@ -132,7 +132,7 @@ Partial Class MainForm
 		'splitContainer1
 		'
 		Me.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill
-		Me.splitContainer1.Location = New System.Drawing.Point(0, 24)
+		Me.splitContainer1.Location = New System.Drawing.Point(0, 27)
 		Me.splitContainer1.Name = "splitContainer1"
 		'
 		'splitContainer1.Panel1
@@ -146,7 +146,7 @@ Partial Class MainForm
 		Me.splitContainer1.Panel2.Controls.Add(Me.listView1)
 		Me.splitContainer1.Panel2.Controls.Add(Me.toolStrip1)
 		Me.splitContainer1.Panel2MinSize = 150
-		Me.splitContainer1.Size = New System.Drawing.Size(880, 279)
+		Me.splitContainer1.Size = New System.Drawing.Size(880, 276)
 		Me.splitContainer1.SplitterDistance = 520
 		Me.splitContainer1.TabIndex = 1
 		AddHandler Me.splitContainer1.SplitterMoved, AddressOf Me.SplitContainer1SplitterMoved
@@ -157,7 +157,7 @@ Partial Class MainForm
 		Me.panel1.Dock = System.Windows.Forms.DockStyle.Fill
 		Me.panel1.Location = New System.Drawing.Point(0, 25)
 		Me.panel1.Name = "panel1"
-		Me.panel1.Size = New System.Drawing.Size(520, 254)
+		Me.panel1.Size = New System.Drawing.Size(520, 251)
 		Me.panel1.TabIndex = 2
 		'
 		'toolStrip2
@@ -202,7 +202,7 @@ Partial Class MainForm
 		Me.listView1.HideSelection = false
 		Me.listView1.Location = New System.Drawing.Point(0, 25)
 		Me.listView1.Name = "listView1"
-		Me.listView1.Size = New System.Drawing.Size(356, 254)
+		Me.listView1.Size = New System.Drawing.Size(356, 251)
 		Me.listView1.TabIndex = 0
 		Me.listView1.UseCompatibleStateImageBehavior = false
 		Me.listView1.View = System.Windows.Forms.View.Details
@@ -330,21 +330,21 @@ Partial Class MainForm
 		Me.menuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.scriptEditorÖffnenToolStripMenuItem, Me.einstellungenToolStripMenuItem, Me.neueVersionHerunterladenToolStripMenuItem, Me.dlGesamtstatus, Me.toolStripSeparator1, Me.dlSpeedIndicator, Me.toolStripLabel2})
 		Me.menuStrip1.Location = New System.Drawing.Point(0, 0)
 		Me.menuStrip1.Name = "menuStrip1"
-		Me.menuStrip1.Size = New System.Drawing.Size(880, 24)
+		Me.menuStrip1.Size = New System.Drawing.Size(880, 27)
 		Me.menuStrip1.TabIndex = 2
 		Me.menuStrip1.Text = "menuStrip1"
 		'
 		'scriptEditorÖffnenToolStripMenuItem
 		'
 		Me.scriptEditorÖffnenToolStripMenuItem.Name = "scriptEditorÖffnenToolStripMenuItem"
-		Me.scriptEditorÖffnenToolStripMenuItem.Size = New System.Drawing.Size(123, 20)
+		Me.scriptEditorÖffnenToolStripMenuItem.Size = New System.Drawing.Size(123, 23)
 		Me.scriptEditorÖffnenToolStripMenuItem.Text = "Script-Editor öffnen"
 		AddHandler Me.scriptEditorÖffnenToolStripMenuItem.Click, AddressOf Me.ScriptEditorÖffnenToolStripMenuItemClick
 		'
 		'einstellungenToolStripMenuItem
 		'
 		Me.einstellungenToolStripMenuItem.Name = "einstellungenToolStripMenuItem"
-		Me.einstellungenToolStripMenuItem.Size = New System.Drawing.Size(90, 20)
+		Me.einstellungenToolStripMenuItem.Size = New System.Drawing.Size(90, 23)
 		Me.einstellungenToolStripMenuItem.Text = "Einstellungen"
 		AddHandler Me.einstellungenToolStripMenuItem.Click, AddressOf Me.EinstellungenToolStripMenuItemClick
 		'
@@ -380,9 +380,19 @@ Partial Class MainForm
 		'dlSpeedIndicator
 		'
 		Me.dlSpeedIndicator.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+		Me.dlSpeedIndicator.AutoSize = false
 		Me.dlSpeedIndicator.Name = "dlSpeedIndicator"
-		Me.dlSpeedIndicator.Size = New System.Drawing.Size(33, 17)
+		Me.dlSpeedIndicator.Size = New System.Drawing.Size(80, 20)
 		Me.dlSpeedIndicator.Text = "0 B/s"
+		Me.dlSpeedIndicator.TextAlign = System.Drawing.ContentAlignment.MiddleRight
+		AddHandler Me.dlSpeedIndicator.Paint, AddressOf Me.DlSpeedIndicatorPaint
+		'
+		'toolStripLabel2
+		'
+		Me.toolStripLabel2.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
+		Me.toolStripLabel2.Name = "toolStripLabel2"
+		Me.toolStripLabel2.Size = New System.Drawing.Size(109, 20)
+		Me.toolStripLabel2.Text = "Ø Geschwindigkeit:"
 		'
 		'timer2
 		'
@@ -416,14 +426,8 @@ Partial Class MainForm
 		'timer4
 		'
 		Me.timer4.Enabled = true
+		Me.timer4.Interval = 50
 		AddHandler Me.timer4.Tick, AddressOf Me.Timer4Tick
-		'
-		'toolStripLabel2
-		'
-		Me.toolStripLabel2.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right
-		Me.toolStripLabel2.Name = "toolStripLabel2"
-		Me.toolStripLabel2.Size = New System.Drawing.Size(109, 17)
-		Me.toolStripLabel2.Text = "Ø Geschwindigkeit:"
 		'
 		'MainForm
 		'

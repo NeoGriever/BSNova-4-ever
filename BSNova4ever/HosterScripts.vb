@@ -232,6 +232,7 @@ Public Class HosterScripts
 		Dim xatt As XmlAttribute = xmlFile.CreateAttribute("priorityList")
 		xatt.Value = newList
 		rootNode.Attributes.Append(xatt)
+		xmlFile.Save(pt)
 	End Sub
 	Private Shared Sub SetSortingList(ByVal newSortingList As List(Of String))
 		Dim att As XmlAttribute = xmlFile.CreateAttribute("priorityList")

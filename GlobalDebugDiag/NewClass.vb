@@ -6,20 +6,29 @@ Imports System.Xml
 Public Class DebugDiag
 	Public Shared Event MessageFired(ByVal msg As String,ByVal type As String,ByVal subcat As String)
 	Public Shared x_file As XmlDocument = New XmlDocument()
-	Private Shared Sub Init()
-		If System.IO.File.Exists("log.xml") Then
+	Private Shared CurrentTimestamp As String = ""
+	Private Shared Sub Init(Optional ByVal forceInit As Boolean = False)
+		If CurrentTimestamp = "" Or forceInit Then
+			CurrentTimestamp = DateTime.Now.ToShortDateString() & "_" & DateTime.Now.ToLongTimeString()
+			CurrentTimestamp = CurrentTimestamp.Replace(":","_")
+		End If
+		If Not System.IO.Directory.Exists("logs") Then
+			System.IO.Directory.CreateDirectory("logs")
+		End If
+		If Not forceInit And System.IO.File.Exists("logs/" & CurrentTimestamp & ".xml") Then
 			Try
-				x_file.Load("log.xml")
+				x_file.Load("logs/" & CurrentTimestamp & ".xml")
 			Catch
+				
 				System.Threading.Thread.Sleep(10)
-				Init()
+				Init(True)
 			End Try
 		Else
 			Dim xmldecl As XmlDeclaration = x_file.CreateXmlDeclaration("1.0", Encoding.GetEncoding("ISO-8859-15").BodyName, "yes")
 			x_file.AppendChild(xmldecl)
 			Dim root As XmlElement = x_file.CreateElement("DebugLog")
 			x_file.AppendChild(root)
-			x_file.Save("log.xml")
+			x_file.Save("logs/" & CurrentTimestamp & ".xml")
 		End If
 	End Sub
 	Public Shared Overloads Sub Log(ByVal msg As String,ByVal type As String)

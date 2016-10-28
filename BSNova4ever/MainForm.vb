@@ -10,7 +10,7 @@ Public Partial Class MainForm
 	Public Sub New()
 		Me.InitializeComponent()
 	End Sub
-	Private selfTimestamp As DateTime = DateTime.Parse("2016-10-22 22:45:00")
+	Private selfTimestamp As DateTime = DateTime.Parse("2016-10-28 23:45:00")
 	#Region " Variablen "
 		Private SortingList As New HybridDictionary()
 		Private treeNodeList As New HybridDictionary()
@@ -707,7 +707,7 @@ Public Partial Class MainForm
 		l.Add(bytesIn)
 		bytesIn = 0
 		
-		If l.Count > 25 Then
+		If l.Count > buffersize Then
 			l.RemoveAt(0)
 		End If
 		
@@ -715,7 +715,7 @@ Public Partial Class MainForm
 		For Each i As Double In l.ToArray()
 			buff += i
 		Next
-		buff = (buff / 25) * 10
+		buff = (buff / buffersize) * (1000 / timer4.Interval)
 		
 		Dim outp As String = ""
 		Dim typ As String = "B"
@@ -729,8 +729,42 @@ Public Partial Class MainForm
 		End If
 		outp = FormatNumber(buff,2, TriState.True,TriState.False,TriState.True) & " " & typ & "/s"
 		dlSpeedIndicator.Text = outp
+		dlSpeedIndicator.Invalidate()
 	End Sub
 	Sub ARB(ByVal b As Long)
 		bytesIn += b
+	End Sub
+	Private buffersize As Integer = 70
+	Sub DlSpeedIndicatorPaint(sender As Object, e As PaintEventArgs)
+		Dim l_off As New List(Of Double)
+		While l_off.Count < buffersize - l.Count
+			l_off.Add(0)
+		End While
+		l_off.AddRange(l.ToArray())
+		
+		Dim highest As Double = 0
+		For Each i As Double In l_off.ToArray()
+			If i > highest Then
+				highest = i
+			End If
+		Next
+		Dim padding As Single = 2
+		Dim breite As Single = dlSpeedIndicator.Width
+		Dim hoehe As Single = dlSpeedIndicator.Height - (padding * 2)
+		
+		Dim points As New List(Of PointF)
+		Dim stp As Long = 0
+		For Each i As Single In l_off.ToArray()
+			Dim perc As Single = 0
+			If highest > 0 Then
+				perc = CSng(i / highest)
+			End If
+			Dim p_top As Single = CSng(hoehe - ((hoehe*(perc*0.90)) + padding))
+			Dim p_left As Single = breite - ((breite/l_off.Count)*stp)
+			stp += 1
+			points.Add(New PointF(p_left,p_top))
+		Next
+		
+		e.Graphics.DrawLines(New Pen(Color.FromArgb(30,0,0,0)),points.ToArray())
 	End Sub
 End Class

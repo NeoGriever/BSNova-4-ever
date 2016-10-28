@@ -52,7 +52,8 @@
 		Else
 			Dim description As String = richTextBox1.Text
 			Dim username As String = textBox1.Text
-			Dim src_logfile As String = System.IO.File.ReadAllText("log.xml")
+			Dim files() As String = System.IO.Directory.GetFiles("logs","*_*.xml")
+			Dim src_logfile As String = System.IO.File.ReadAllText(files(files.Length - 1))
 			Dim los As New List(Of String)
 			los.Add(username)
 			los.Add(description)

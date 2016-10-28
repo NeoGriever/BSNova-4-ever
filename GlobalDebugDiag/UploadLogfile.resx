@@ -120,6 +120,8 @@
   <data name="label1.Text" xml:space="preserve">
     <value>Hiermit wird die Logdatei von BSNova4ever auf den Server übertragen und zur Analyse freigegeben. Dies dient dazu, um Fehler aufzuspüren und zu korrigieren.
 
-Es ist nicht nötig, die Logdatei im Forum zu posten oder auf Filehoster zu Laden. Es erleichtert Beiderseits die Arbeit an BSNova4ever.</value>
+Es ist nicht nötig, die Logdatei im Forum zu posten oder auf Filehoster zu Laden. Es erleichtert Beiderseits die Arbeit an BSNova4ever.
+
+ACHTUNG! Es wird immer die letzte Logdatei hochgeladen!</value>
   </data>
 </root>
